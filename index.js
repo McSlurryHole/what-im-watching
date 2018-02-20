@@ -9,10 +9,10 @@
 // SETTINGS
 const HIGHLIGHT_COLOR = "#91ffd0";
 const BUTTON_STYLES = `background-color:#fcfcfc;
-											 border:none;
-											 color:#0066cc;
-											 margin:1px;
-											 width:25px;`
+		       border:none;
+		       color:#0066cc;
+		       margin:1px;
+		       width:25px;`
 
 // BEGIN SCRIPT
 const script1 = document.createElement('script')
@@ -31,10 +31,10 @@ thePage.appendChild(script2)
 function createButton(anime, type){
   const element = document.createElement('td');
   element.innerHTML = `<button 
-													style="${BUTTON_STYLES}"
-													onClick="${(type === "add")? "addToList" : "removeFromList"}('${anime}')">
-													${(type === "add")? "+" : "-"}
-											 </button>`
+			style="${BUTTON_STYLES}"
+			onClick="${(type === "add")? "addToList" : "removeFromList"}('${anime}')">
+			${(type === "add")? "+" : "-"}
+			</button>`
   return element;
 }
 
