@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Shows I'm Watching
-// @namespace http://horriblesubs.info/
+// @namespace https://github.com/McSlurryHole/what-im-watching
 // @description highlights the shows I'm watching
 // @include http://horriblesubs.info/
 // @author your mum
