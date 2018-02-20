@@ -6,6 +6,15 @@
 // @run-at document-idle
 // ==/UserScript==
 
+// SETTINGS
+const HIGHLIGHT_COLOR = "#91ffd0";
+const BUTTON_STYLES = `background-color:#fcfcfc;
+											 border:none;
+											 color:#0066cc;
+											 margin:1px;
+											 width:25px;`
+
+// BEGIN SCRIPT
 const script1 = document.createElement('script')
 script1.type = "text/javascript";
 script1.appendChild(document.createTextNode(addToList));
@@ -14,22 +23,25 @@ const script2 = document.createElement('script')
 script2.type = "text/javascript";
 script2.appendChild(document.createTextNode(removeFromList));
 
-(document.body || document.head || document.documentElement).appendChild(script1);
-(document.body || document.head || document.documentElement).appendChild(script2);
+const thePage = (document.body || document.head || document.documentElement)
 
-function createButton(show, buttonType){
+thePage.appendChild(script1)
+thePage.appendChild(script2)
+
+function createButton(anime, type){
   const element = document.createElement('td');
-  if(buttonType === "add"){
-  	element.innerHTML = `<button style="background-color:#fcfcfc;border:1px solid #d4d4d4;margin:1px;" onClick="addToList('${show}')">+</button>`
-  } else if (buttonType == "remove"){
-  	element.innerHTML = `<button style="background-color:#fcfcfc;border:1px solid #d4d4d4;margin:1px;" onClick="removeFromList('${show}')">-</button>`
-  }
+  element.innerHTML = `<button 
+													style="${BUTTON_STYLES}"
+													onClick="${(type === "add")? "addToList" : "removeFromList"}('${anime}')">
+													${(type === "add")? "+" : "-"}
+											 </button>`
   return element;
 }
 
 function addToList(show){
-	let listOfShows = JSON.parse(localStorage.getItem("listOfShows"));
-  if(listOfShows != null){
+	let listOfShows = localStorage.getItem("listOfShows");
+  if(listOfShows !== null){
+   	listOfShows = JSON.parse(listOfShows)
   	listOfShows.indexOf(show) === -1 ? listOfShows.push(show) : null;
   	localStorage.setItem("listOfShows", JSON.stringify(listOfShows));
   } else {
@@ -40,10 +52,13 @@ function addToList(show){
 }
 
 function removeFromList(show){
-	let listOfShows = JSON.parse(localStorage.getItem("listOfShows"));
-  if(listOfShows.indexOf(show) > -1){
-    listOfShows.splice(listOfShows.indexOf(show), 1)
-    localStorage.setItem("listOfShows", JSON.stringify(listOfShows));
+  let listOfShows = localStorage.getItem("listOfShows");
+  if(listOfShows !== null){
+  	listOfShows = JSON.parse(listOfShows)
+  	if(listOfShows.indexOf(show) > -1){
+    	listOfShows.splice(listOfShows.indexOf(show), 1)
+    	localStorage.setItem("listOfShows", JSON.stringify(listOfShows));
+    }
   }
 }
 
@@ -52,13 +67,13 @@ setInterval(function(){
   document.querySelectorAll(".latest > table > tbody > tr > td > a").forEach(element => {
     const row = element.parentElement.parentElement
     if(row.children.length == 4){
-    	row.appendChild(createButton(element.text, "add"));
-    	row.appendChild(createButton(element.text, "remove"));
+    	row.insertBefore(createButton(element.text, "remove"), row.children[0]);
+    	row.insertBefore(createButton(element.text, "add"), row.children[0]);
     }
     if (listOfShows.indexOf(element.text) >= 0){
-      element.style.backgroundColor = "#91ffd0";
+      row.style.backgroundColor = HIGHLIGHT_COLOR;
     } else {
-    	element.style.backgroundColor = "transparent";
+    	row.style.backgroundColor = "transparent";
     }
   });
 }, 500);
