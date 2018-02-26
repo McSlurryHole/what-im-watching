@@ -59,13 +59,16 @@ function removeFromList(show) {
 
 setInterval(function () {
   var listOfShows = localStorage.getItem("listOfShows") || [];
-  document.querySelectorAll(".latest > table > tbody > tr > td > a").forEach(function (element) {
-    var row = element.parentElement.parentElement;
+  document.querySelectorAll(".rls-label").forEach(function (element) {  
+    var hasA = element.getElementsByTagName('A');
+    // get the show name even if not a link
+    var elementText = (hasA.length > 0) ? hasA[0].text : (element.innerHTML).match(/\(.*\) +(.*)- +\d+?/)[1]; 
+    var row = element.parentElement;
     if (row.children.length == 4) {
-      row.insertBefore(createButton(element.text, "remove"), row.children[0]);
-      row.insertBefore(createButton(element.text, "add"), row.children[0]);
+      row.insertBefore(createButton(elementText, "remove"), row.children[0]);
+      row.insertBefore(createButton(elementText, "add"), row.children[0]);
     }
-    if (listOfShows.indexOf(element.text) >= 0) {
+    if(listOfShows.indexOf(elementText) >= 0) {
       row.style.backgroundColor = HIGHLIGHT_COLOR;
     } else {
       row.style.backgroundColor = "transparent";
