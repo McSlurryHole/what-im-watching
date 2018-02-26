@@ -10,8 +10,13 @@
 "use strict";
 
 // SETTINGS
+	// background color of the row.
 var HIGHLIGHT_COLOR = "#91ffd0";
+	// css for the + - buttons.
 var BUTTON_STYLES = "background-color:#fcfcfc;border:none;color:#0066cc;margin:1px;width:25px;";
+	// changes dates to the format that the rest of the world uses - DD/MM
+var CORRECT_DATE_FORMAT = true
+
 
 // BEGIN SCRIPT
 var script1 = document.createElement('script');
@@ -62,11 +67,19 @@ setInterval(function () {
   document.querySelectorAll(".rls-label").forEach(function (element) {  
     var hasA = element.getElementsByTagName('A');
     // get the show name even if not a link
-    var elementText = (hasA.length > 0) ? hasA[0].text : (element.innerHTML).match(/\(.*\) +(.*)- +\d+?/)[1]; 
+    var elementText = (hasA.length > 0) ? hasA[0].text : (element.innerHTML).match(/ +(.*)- +\d+?/)[1].trim(); 
     var row = element.parentElement;
-    if (row.children.length == 4) {
+    if (!element.classList.contains("updated-row")) {
       row.insertBefore(createButton(elementText, "remove"), row.children[0]);
       row.insertBefore(createButton(elementText, "add"), row.children[0]);
+      if(CORRECT_DATE_FORMAT){
+    		var dateRegex = element.innerHTML.match(/\((\d+)\/(\d+)\)/);
+      	if(typeof dateRegex !== "undefined" && dateRegex !== null ){
+    			var newDate = dateRegex[2] + "/" + dateRegex[1]
+      		element.innerHTML = element.innerHTML.replace(/\((\d+)\/(\d+)\)/, newDate)
+      	}
+    	}
+      element.classList.add("updated-row")
     }
     if(listOfShows.indexOf(elementText) >= 0) {
       row.style.backgroundColor = HIGHLIGHT_COLOR;
