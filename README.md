@@ -1,7 +1,7 @@
 # what-im-watching
 greasemonkey script that changes how the page on a "prominent anime fan site" is displayed and provides a neat little highlight to the shows you're watching, it will even show a browser notification when a new show comes out (kind of)
 
-![preview](https://imgur.com/a/XqmTs3Z)
+![preview](https://i.imgur.com/SCDyfzv.png)
 
 ## To Install
 This script is written for [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) running in Firefox. If you are using another user script extension/browser you may need to change some of the script information up top.
