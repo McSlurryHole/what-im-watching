@@ -12,11 +12,6 @@
 // SETTINGS
 	// background color of the row.
 var HIGHLIGHT_COLOR = "#91ffd0";
-	// css for the + - buttons.
-// var BUTTON_STYLES = "background-color:#c8c8c8a8;border:none;color:#ffffff;margin:1px;width:25px;height:25px;";
-var BUTTON_STYLES = "";
-	// changes dates to the format that the rest of the world uses - DD/MM
-var CORRECT_DATE_FORMAT = true
 
 // BEGIN SCRIPT
 var script1 = document.createElement('script');
@@ -37,9 +32,9 @@ Element.prototype.remove = function() {
 }
 NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
   for(var i = this.length - 1; i >= 0; i--) {
-      if(this[i] && this[i].parentElement) {
-          this[i].parentElement.removeChild(this[i]);
-      }
+    if(this[i] && this[i].parentElement) {
+      this[i].parentElement.removeChild(this[i]);
+    }
   }
 }
 
@@ -61,17 +56,19 @@ featuredSection.remove();
 disqus.remove();
 pageWrapper.appendChild(disqusClone);
 
+var numberOfCLicks = 1;
 // attach event listener to more button
-var checkLoadedInterval = window.setInterval(function(){checkLoaded(1)}, 100);
+var checkLoadedInterval = window.setInterval(function(){checkLoaded()}, 100);
 
 document.querySelector(".latest-show-more").addEventListener("click", function (e) {
-  checkLoadedInterval = window.setInterval(function(){checkLoaded(document.querySelector(".latest-releases").childNodes.length + 1)}, 100)
+  checkLoadedInterval = window.setInterval(function(){checkLoaded()}, 100)
 }, null)
 
-function checkLoaded(clicks){
-  var isLoaded = document.querySelector(".latest-releases").childNodes.length >= clicks
-  fixRows();
+function checkLoaded(){
+  var isLoaded = document.querySelector(".latest-releases").childNodes.length >= numberOfCLicks
   if (isLoaded){
+    fixRows();    
+    numberOfCLicks++
     window.clearInterval(checkLoadedInterval);
   } 
 }
@@ -148,8 +145,6 @@ function notify(anime, number) {
   }
 }
 
-
-
 function fixRows(){
   var listOfShows = localStorage.getItem("listOfShows") || [];
   var listOfNotifications = localStorage.getItem("listOfNotifications") || [];
@@ -193,9 +188,3 @@ function fixRows(){
     }
   })
 }
-
-
-
-
-
-
