@@ -12,6 +12,11 @@
 // SETTINGS
 	// background color of the row.
 var HIGHLIGHT_COLOR = "#91ffd0";
+	// css for the + - buttons.
+// var BUTTON_STYLES = "background-color:#c8c8c8a8;border:none;color:#ffffff;margin:1px;width:25px;height:25px;";
+var BUTTON_STYLES = "";
+	// changes dates to the format that the rest of the world uses - DD/MM
+var CORRECT_DATE_FORMAT = true
 
 // BEGIN SCRIPT
 var script1 = document.createElement('script');
@@ -56,6 +61,21 @@ featuredSection.remove();
 disqus.remove();
 pageWrapper.appendChild(disqusClone);
 
+// attach event listener to more button
+var checkLoadedInterval = window.setInterval(function(){checkLoaded(1)}, 100);
+
+document.querySelector(".latest-show-more").addEventListener("click", function (e) {
+  checkLoadedInterval = window.setInterval(function(){checkLoaded(document.querySelector(".latest-releases").childNodes.length + 1)}, 100)
+}, null)
+
+function checkLoaded(clicks){
+  var isLoaded = document.querySelector(".latest-releases").childNodes.length >= clicks
+  fixRows();
+  if (isLoaded){
+    window.clearInterval(checkLoadedInterval);
+  } 
+}
+
 function createButton(anime, type) {
   var element = document.createElement('span');
   element.classList.add("badge")
@@ -90,7 +110,9 @@ function removeFromList(show) {
 
 function notify(anime, number) {
   var listOfNotifications = localStorage.getItem("listOfNotifications") || [];
+
   var show = anime + " " + number
+
   if(listOfNotifications !== null && listOfNotifications.length !== 0){
     listOfNotifications = JSON.parse(listOfNotifications);
     listOfNotifications.indexOf(show) === -1 ? listOfNotifications.push(show) : null;
@@ -127,7 +149,8 @@ function notify(anime, number) {
 }
 
 
-setInterval(function () {
+
+function fixRows(){
   var listOfShows = localStorage.getItem("listOfShows") || [];
   var listOfNotifications = localStorage.getItem("listOfNotifications") || [];
 
@@ -141,7 +164,9 @@ setInterval(function () {
     date.style.textAlign = "right"
 
     if (!element.classList.contains("updated-row")) {
+
       var link = element.getAttribute("href");
+
       element.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); return false; }, null)
 
       var resChild = element.childNodes[3];
@@ -161,13 +186,16 @@ setInterval(function () {
     if (listOfShows.indexOf(rowText) >= 0) {
       element.style.backgroundColor = HIGHLIGHT_COLOR;
       if(listOfNotifications.indexOf(rowText + " " + episodeNumber) === -1){
-        console.log("match found")
         notify(rowText, episodeNumber);
       }
     } else {
       element.style.backgroundColor = "#ffffff";
     }
   })
-}, 500)
+}
+
+
+
+
 
 
