@@ -13,6 +13,3 @@ if the prompt doesn't appear just click "new user script ..." in Greasemonkey an
 ## TODO: 
 * figure out a better way to do the notifications:
   * currently this script will only run if you open the page (duh) whereas I'd like this to periodically poll and notify for new shows. I realise this is probably the limitations of a greasemonkey script and would probably require an actual extension; which I may get to eventually
-
-* figure out a better way to apply the highlights:
-  * there's defo a better way to do this than iterating over a bunch of elements every 500ms.
